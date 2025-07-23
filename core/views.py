@@ -23,19 +23,48 @@ from core.serializers import (
 BASE_PRICE = 120000
 
 
-class RegisterDeviceView(APIView):
-    def post(self, request):
-        hardware_id = request.data.get("hardware_id")
-        if not hardware_id:
-            return Response({"error": "Hardware ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+@api_view(["POST"])
+def device_create_or_update(request):
+    """
+    Create or update a device based on hardware_id.
+    If hardware_id exists, update the device.
+    If hardware_id doesn't exist, create a new device.
+    """
+    hardware_id = request.data.get("hardware_id")
 
-        device, created = Device.objects.get_or_create(hardware_id=hardware_id)
+    if not hardware_id:
+        return Response({"error": "hardware_id is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        # Try to get existing device
+        device = Device.objects.get(hardware_id=hardware_id)
+        serializer = DeviceSerializer(device, data=request.data, partial=True)
+        is_created = False
+    except Device.DoesNotExist:
+        # Create new device
+        serializer = DeviceSerializer(data=request.data)
+        is_created = True
+
+    if serializer.is_valid():
+        device = serializer.save()
+
+        # Update last_seen automatically
         device.last_seen = timezone.now()
-        device.status = "online"
-        device.save()
+        device.save(update_fields=["last_seen"])
 
-        serializer = DeviceSerializer(device)
-        return Response(serializer.data, status=status.HTTP_201_CREATED if created else status.HTTP_200_OK)
+        response_data = serializer.data
+        response_status = status.HTTP_201_CREATED if is_created else status.HTTP_200_OK
+
+        return Response(
+            {
+                "message": "Device created successfully" if is_created else "Device updated successfully",
+                "created": is_created,
+                "data": response_data,
+            },
+            status=response_status,
+        )
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class GetDeviceDataAndCommandsView(APIView):

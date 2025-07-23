@@ -13,9 +13,10 @@ class DeviceAdmin(admin.ModelAdmin):
     list_display = ("hardware_id", "name", "status", "last_seen")
     search_fields = ("hardware_id", "name")
     list_filter = ("status",)
-    readonly_fields = ("last_seen", "status")
+    readonly_fields = ("last_seen", "status", "ip", "os_version", "app_version")
     fieldsets = (
         (None, {"fields": ("hardware_id", "name", "status", "settings")}),
+        ("Device Information", {"fields": ("os_version", "app_version", "ip")}),
         ("Time Information", {"fields": ("last_seen",), "classes": ("collapse",)}),
     )
 

