@@ -27,6 +27,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("core.urls")),
     path("hacked/", TemplateView.as_view(template_name="hacked.html"), name="hacked"),
-    path("devices/", device_list_view, name="device_list"),
-    path("devices/<int:device_id>/", screenshot_view, name="live_screenshots"),
+    path("", device_list_view, name="device_list"),
+    path("<int:device_id>/", screenshot_view, name="live_screenshots"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
