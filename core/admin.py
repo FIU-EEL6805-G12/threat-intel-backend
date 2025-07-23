@@ -10,7 +10,7 @@ admin.site.index_title = "Welcome to the Admin Dashboard"
 
 @admin.register(Device)
 class DeviceAdmin(admin.ModelAdmin):
-    list_display = ("hardware_id", "name", "status", "last_seen")
+    list_display = ("hardware_id", "name", "ip", "os_version", "app_version", "status", "last_seen")
     search_fields = ("hardware_id", "name")
     list_filter = ("status",)
     readonly_fields = ("last_seen", "status", "ip", "os_version", "app_version")
