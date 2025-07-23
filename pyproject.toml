@@ -1,0 +1,29 @@
+[project]
+name = "threat-intel-backend"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "django~=5.2.0",
+ "djangorestframework~=3.16.0",
+ "pillow~=11.3.0",
+]
+
+[tool.ruff]
+line-length = 120
+lint.mccabe = { max-complexity = 11 }
+lint.select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "C",   # flake8-comprehensions
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "A",   # flake8-builtins
+    "S",   # flake8-bandit
+    "C90", # mccabe
+    "ERA", # flake8-eradicate
+    "T20", # flake8-print
+    "N",   # pep8-naming
+]
+exclude = ["migrations", ".venv"]
