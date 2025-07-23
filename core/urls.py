@@ -27,5 +27,5 @@ urlpatterns = [
     # Frontend API
     path("devices/", device_list_api, name="device_list"),
     path("latest/<int:device_id>/", latest_screenshot, name="latest_screenshot"),
-    path("check/<int:device_id>/", check_new_screenshot, name="check_new_screenshot"),
+    path("check/<int:device_id>/<int:last_id>/", check_new_screenshot, name="check_new_screenshot"),
 ]

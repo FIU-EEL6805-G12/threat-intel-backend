@@ -172,7 +172,7 @@ def screenshot_view(request, device_id):
 @api_view(["GET"])
 def latest_screenshot(request, device_id):
     """Get latest screenshot for device"""
-    latest = Screenshot.objects.filter(device_id=device_id).first()
+    latest = Screenshot.objects.filter(device_id=device_id).order_by("-timestamp").first()
 
     if latest:
         serializer = ScreenshotSerializer(latest)
@@ -182,15 +182,15 @@ def latest_screenshot(request, device_id):
 
 
 @api_view(["GET"])
-def check_new_screenshot(request, device_id):
+def check_new_screenshot(request, device_id, last_id):
     """Check if new screenshot exists since last timestamp"""
-    last_timestamp = request.GET.get("last_timestamp")
-    latest = Screenshot.objects.filter(device_id=device_id).first()
+
+    latest = Screenshot.objects.filter(device_id=device_id).order_by("-timestamp").first()
 
     if not latest:
         return Response({"has_new": False})
 
-    if not last_timestamp or latest.timestamp.isoformat() > last_timestamp:
+    if latest.id != last_id:
         serializer = ScreenshotSerializer(latest)
         return Response({"has_new": True, "screenshot": serializer.data})
 

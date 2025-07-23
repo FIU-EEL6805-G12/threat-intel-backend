@@ -190,6 +190,7 @@
             `;
             
             lastTimestamp = data.timestamp;
+            lastId = data.id;
         }
         
         function showNoData() {
@@ -216,7 +217,7 @@
         
         async function checkForNew() {
             try {
-                const url = `/api/check/${deviceId}/${lastTimestamp ? `?last_timestamp=${lastTimestamp}` : ''}`;
+                const url = `/api/check/${deviceId}/${lastId}/`;
                 const response = await fetch(url);
                 const data = await response.json();
                 
@@ -230,6 +231,9 @@
                         updateStatus('live', '🟢 Live - Auto-refreshing...');
                         document.title = `Live Screenshots - Device ${deviceId}`;
                     }, 2000);
+                } 
+                else {
+                    updateStatus('waiting', '⏳ Waiting for screenshots...');
                 }
             } catch (error) {
                 console.error('Error checking for new:', error);
