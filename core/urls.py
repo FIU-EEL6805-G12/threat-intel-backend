@@ -6,6 +6,7 @@ from core.views import (
     UploadActivityDataView,
     UploadScreenshotView,
     check_new_screenshot,
+    device_activities,
     device_create_or_update,
     device_list_api,
     latest_screenshot,

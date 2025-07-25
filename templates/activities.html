@@ -1,0 +1,69 @@
+{% block title %}{{ device.name|default:device.hardware_id }} - Activity Logs{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2>{{ device.name|default:device.hardware_id }} - Activity Logs</h2>
+            <p class="text-muted">Total logs: {{ total_logs }}</p>
+            
+            {% if activity_logs %}
+                <div class="activity-logs">
+                    {% for log in activity_logs %}
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <small class="text-muted">
+                                    {{ log.timestamp|date:"Y-m-d H:i:s" }}
+                                </small>
+                            </div>
+                            <div class="card-body">
+                                {% if log.key_strokes %}
+                                    <pre class="mb-0">{{ log.key_strokes }}</pre>
+                                {% else %}
+                                    <em class="text-muted">No keystrokes recorded</em>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Pagination -->
+                {% if is_paginated %}
+                    <nav aria-label="Activity logs pagination">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1">First</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                </li>
+                            {% endif %}
+                            
+                            <li class="page-item active">
+                                <span class="page-link">
+                                    {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                                </span>
+                            </li>
+                            
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            {% else %}
+                <div class="alert alert-info">
+                    No activity logs found for this device.
+                </div>
+            {% endif %}
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -144,15 +144,20 @@
         </a>
         
         <div class="controls">
+            <a href="{% url 'latest_activities' device.id %}" title="Activities">
+                Activities
+            </a>
             <button id="pause-btn" class="control-btn" onclick="toggleAutoRefresh()">
                 ⏸️ Pause
             </button>
             <button class="control-btn" onclick="manualRefresh()">
                 🔄 Refresh Now
             </button>
+            
         </div>
     </div>
     <div class="container">
+        
         <div id="status" class="status waiting">
             🔄 Loading...
         </div>

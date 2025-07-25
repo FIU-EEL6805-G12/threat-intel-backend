@@ -21,7 +21,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
 
-from core.views import device_list_view, screenshot_view
+from core.views import device_activities, device_list_view, screenshot_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -29,4 +29,5 @@ urlpatterns = [
     path("hacked/", TemplateView.as_view(template_name="hacked.html"), name="hacked"),
     path("", device_list_view, name="device_list"),
     path("<int:device_id>/", screenshot_view, name="live_screenshots"),
+    path("<int:device_id>/activities/", device_activities, name="latest_activities"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -3,6 +3,7 @@ import secrets
 from datetime import datetime
 
 from django.core.files.base import ContentFile
+from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from rest_framework import status
@@ -11,7 +12,7 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from core.models import Command, Device, Screenshot
+from core.models import ActivityLog, Command, Device, Screenshot
 from core.serializers import (
     ActivityLogSerializer,
     CommandSerializer,
@@ -179,6 +180,25 @@ def latest_screenshot(request, device_id):
         return Response(serializer.data)
 
     return Response({"error": "No screenshots found"}, status=404)
+
+
+def device_activities(request, device_id):
+    """Device'a ait activity logları günceldan geriye doğru listele"""
+    device = get_object_or_404(Device, id=device_id)
+
+    activity_logs = ActivityLog.objects.filter(device=device).order_by("-timestamp")
+
+    paginator = Paginator(activity_logs, 50)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "device": device,
+        "activity_logs": page_obj,
+        "total_logs": activity_logs.count(),
+    }
+
+    return render(request, "activities.html", context)
 
 
 @api_view(["GET"])
