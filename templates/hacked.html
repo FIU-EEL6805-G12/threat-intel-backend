@@ -17,9 +17,9 @@
             background: #000;
             color: #00ff00;
             font-family: 'Courier Prime', monospace;
-            overflow: hidden;
-            height: 100vh;
+            min-height: 100vh;
             position: relative;
+            overflow-x: hidden;
         }
         
         .matrix-bg {
@@ -35,22 +35,24 @@
         .container {
             position: relative;
             z-index: 2;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 20px;
+            padding: 10px;
         }
         
         .warning {
             border: 3px solid #ff0000;
-            padding: 30px;
-            margin: 20px;
+            padding: 20px;
+            margin: 10px;
             background: rgba(255, 0, 0, 0.1);
             box-shadow: 0 0 20px #ff0000;
             animation: pulse 2s infinite;
+            width: 100%;
+            max-width: 800px;
         }
         
         @keyframes pulse {
@@ -60,9 +62,9 @@
         }
         
         .skull {
-            font-size: 4rem;
+            font-size: clamp(2rem, 8vw, 4rem);
             color: #ff0000;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             animation: shake 0.5s infinite;
         }
         
@@ -73,12 +75,13 @@
         }
         
         .main-title {
-            font-size: 3rem;
+            font-size: clamp(1.5rem, 6vw, 3rem);
             color: #ff0000;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-shadow: 0 0 10px #ff0000;
             animation: blink 1s infinite;
+            word-wrap: break-word;
         }
         
         @keyframes blink {
@@ -87,17 +90,19 @@
         }
         
         .subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 30px;
+            font-size: clamp(0.9rem, 3vw, 1.5rem);
+            margin-bottom: 20px;
             color: #00ff00;
+            word-wrap: break-word;
         }
         
         .hacker-list {
             background: rgba(0, 255, 0, 0.1);
             border: 2px solid #00ff00;
-            padding: 20px;
-            margin: 20px 0;
+            padding: 15px;
+            margin: 15px 0;
             text-align: left;
+            width: 100%;
             max-width: 600px;
         }
         
@@ -105,31 +110,53 @@
             color: #00ff00;
             margin-bottom: 15px;
             text-align: center;
-            font-size: 1.3rem;
+            font-size: clamp(1rem, 3vw, 1.3rem);
         }
         
         .hacker {
             display: flex;
             justify-content: space-between;
-            margin: 10px 0;
+            margin: 8px 0;
             padding: 5px;
             border-bottom: 1px solid #004400;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+        }
+        
+        .hacker span:first-child {
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .hacker span:last-child {
+            flex-shrink: 0;
         }
         
         .bottom-section {
             display: flex;
+            flex-direction: column;
             gap: 20px;
-            margin: 30px 0;
-            max-width: 1200px;
+            margin: 20px 0;
             width: 100%;
+            max-width: 1200px;
         }
         
         .bitcoin-section {
-            flex: 1;
-            padding: 20px;
+            padding: 15px;
             border: 2px solid #ffaa00;
             background: rgba(255, 170, 0, 0.1);
             color: #ffaa00;
+        }
+        
+        .bitcoin-section h3 {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            margin-bottom: 10px;
+        }
+        
+        .bitcoin-section p {
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+            margin: 8px 0;
         }
         
         .bitcoin-address {
@@ -139,22 +166,25 @@
             border: 1px solid #ffaa00;
             margin: 10px 0;
             word-break: break-all;
-            font-size: 0.9rem;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            overflow-wrap: break-word;
         }
         
         .final-message {
-            flex: 1;
-            font-size: 1.2rem;
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
             color: #ffffff;
             background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
+            padding: 15px;
             border: 1px solid #ffffff;
         }
         
-        @media (max-width: 768px) {
-            .bottom-section {
-                flex-direction: column;
-            }
+        .final-message h3 {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            margin-bottom: 10px;
+        }
+        
+        .final-message p {
+            margin: 8px 0;
         }
         
         .typing {
@@ -162,6 +192,8 @@
             border-right: 2px solid #00ff00;
             white-space: nowrap;
             animation: typing 3s steps(40) 1s infinite, cursor 1s infinite;
+            width: fit-content;
+            max-width: 100%;
         }
         
         @keyframes typing {
@@ -190,12 +222,86 @@
         
         .footer-warning {
             position: fixed;
-            bottom: 20px;
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
             color: #ff0000;
-            font-size: 0.9rem;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
             animation: blink 0.5s infinite;
+            text-align: center;
+            padding: 0 10px;
+        }
+        
+        /* Tablet ve desktop için yatay düzen */
+        @media (min-width: 768px) {
+            .bottom-section {
+                flex-direction: row;
+            }
+            
+            .bitcoin-section {
+                flex: 1;
+            }
+            
+            .final-message {
+                flex: 1;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .warning {
+                padding: 30px;
+                margin: 20px;
+            }
+            
+            .hacker-list {
+                padding: 20px;
+            }
+        }
+        
+        /* Çok küçük ekranlar için */
+        @media (max-width: 480px) {
+            .hacker {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .hacker span:first-child {
+                min-width: auto;
+            }
+            
+            .typing {
+                white-space: normal;
+                border-right: none;
+                animation: none;
+            }
+            
+            .container {
+                padding: 5px;
+            }
+            
+            .warning {
+                padding: 15px;
+                margin: 5px;
+            }
+            
+            .hacker-list {
+                padding: 10px;
+            }
+            
+            .bitcoin-section,
+            .final-message {
+                padding: 10px;
+            }
+        }
+        
+        /* Çok geniş ekranlar için maksimum genişlik */
+        @media (min-width: 1400px) {
+            .container {
+                max-width: 1400px;
+                margin: 0 auto;
+            }
         }
     </style>
 </head>
@@ -251,25 +357,34 @@
         </div>
     </div>
 
-
     <script>
         // Matrix rain effect
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        resizeCanvas();
 
         const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}";
         const matrixArray = matrix.split("");
 
         const fontSize = 10;
-        const columns = canvas.width / fontSize;
+        let columns = canvas.width / fontSize;
 
-        const drops = [];
-        for(let x = 0; x < columns; x++) {
-            drops[x] = 1;
+        let drops = [];
+        function initDrops() {
+            drops = [];
+            columns = canvas.width / fontSize;
+            for(let x = 0; x < columns; x++) {
+                drops[x] = 1;
+            }
         }
+
+        initDrops();
 
         function draw() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
@@ -301,8 +416,8 @@
 
         // Window resize handler
         window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            resizeCanvas();
+            initDrops();
         });
     </script>
 </body>
